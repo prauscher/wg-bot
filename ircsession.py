@@ -66,8 +66,13 @@ class IRCSession(object):
 			source = line.split(' ', 2)[0].lstrip(':').split('!', 2)[0].lower()
 			line = ' '.join(line.split(' ', 2)[1:])
 
+		# nick is in use
+		if line.startswith('433'):
+			self.nickname = self.nickname + "_"
+			self.send('NICK ' + self.nickname)
+
 		# handle commands via PRIVMSG
-		if line.upper().startswith('PRIVMSG'):
+		elif line.upper().startswith('PRIVMSG'):
 			# irc-syntax. "PRIVMSG <target> <message>"
 
 			(cmd, chan) = line.split(' ')[0:2]
