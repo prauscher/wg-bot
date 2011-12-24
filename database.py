@@ -5,5 +5,5 @@ class ExampleDatabase:
 	def __init__(self):
 		pass
 
-	def something(self, context, line):
+	def something(self, context, command, text):
 		context.reply('u mad?')

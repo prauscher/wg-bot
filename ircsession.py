@@ -84,7 +84,7 @@ class IRCSession(object):
 			
 			for command in self.privmsgHooks.keys():
 				if body.lower().startswith(command.lower()):
-					self.privmsgHooks[command](IRCContext(self, chan, source), body)
+					self.privmsgHooks[command](IRCContext(self, chan, source), command, body[len(command):])
 
 		# only needed if we want to auto-join every channel we get invited to
 		#elif line.upper().startswith('INVITE'):
