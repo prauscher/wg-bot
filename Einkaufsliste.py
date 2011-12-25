@@ -7,29 +7,7 @@ class Einkauf(object):
 		self.author = author
 	
 	def __str__(self):
-		return self.label + " (" + self.author + ")"
-
-class DummyEinkaufsliste(object):
-	def __init__(self):
-		self.items = []
-
-	def add(self, item):
-		self.items.append(item)
-	
-	def delete(self, id):
-		del(self.items[id])
-	
-	def get(self, id):
-		return self.items[id]
-	
-	def ids(self):
-		return range(0, self.length())
-	
-	def length(self):
-		return len(self.items)
-	
-	def clear(self):
-		self.items = []
+		return self.label + " (" + self.author[0] + " " + self.author[1:] + ")"
 	
 class IRCEinkaufsliste(object):
 	def __init__(self, el):
@@ -38,8 +16,8 @@ class IRCEinkaufsliste(object):
 	def ircAdd(self, context, command, text):
 		try:
 			id = self.el.add(Einkauf(text, context.sender))
-		except:
-			context.reply('Failure!')
+		except Exception as ex:
+			context.reply('Failure: ' + str(ex))
 		else:
 			context.reply('Success!')
 	
@@ -47,12 +25,12 @@ class IRCEinkaufsliste(object):
 		try:
 			id = int(text)
 			self.el.delete(id)
-		except:
-			context.reply('Failure!')
+		except Exception as ex:
+			context.reply('Failure: ' + str(ex))
 		else:
 			context.reply('Deleted #' + str(id))
 	
-	def ircShow(self, context, command, text):
+	def ircList(self, context, command, text):
 		for id in self.el.ids():
 			context.reply(str(id) + ": " + str(self.el.get(id)))
 		else:
@@ -61,7 +39,7 @@ class IRCEinkaufsliste(object):
 	def ircClear(self, context, command, text):
 		try:
 			self.el.clear()
-		except:
-			context.reply('Failure!')
+		except Exception as ex:
+			context.reply('Failure: ' + str(ex))
 		else:
 			context.reply('Done!')
